@@ -1,5 +1,5 @@
+#include <SDL2/SDL.h>
 #include "game.h"
-#include "SDL.h"
 
 Game::Game(int g_width, int g_height):
 	user(g_width, g_height, program, Game::Blue),

@@ -1,9 +1,9 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include <SDL2/SDL.h>
 #include "game.h"
 #include "player.h"
-#include "SDL.h"
 
 class Graphics {
  public:

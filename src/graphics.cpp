@@ -44,9 +44,9 @@ Graphics::~Graphics()
 // Render the graphics to the window
 void Graphics::Render(Player const &user, Player const &program)
 {
-  SDL_Rect block;
-  block.w = screen_width / grid_width;
-  block.h = screen_height / grid_height;
+  SDL_Rect cell;
+  cell.w = screen_width / grid_width;
+  cell.h = screen_height / grid_height;
 
   // Clear screen
   SDL_SetRenderDrawColor(renderer, 0x1E, 0x1E, 0x1E, 0xFF);
@@ -55,31 +55,31 @@ void Graphics::Render(Player const &user, Player const &program)
   // Render user's trail
   SDL_SetRenderDrawColor(renderer, 0x26, 0xB4, 0xCA, 0xFF);
   for (SDL_Point const &point : user.trail) {
-    block.x = point.x * block.w;
-    block.y = point.y * block.h;
-    SDL_RenderFillRect(renderer, &block);
+    cell.x = point.x * cell.w;
+    cell.y = point.y * cell.h;
+    SDL_RenderFillRect(renderer, &cell);
   }
 
   // Render program's trail
   // Different color for better head visibility
   SDL_SetRenderDrawColor(renderer, 0xDF, 0x74, 0x0C, 0x99);
   for (SDL_Point const &point : program.trail) {
-    block.x = point.x * block.w;
-    block.y = point.y * block.h;
-    SDL_RenderFillRect(renderer, &block);
+    cell.x = point.x * cell.w;
+    cell.y = point.y * cell.h;
+    SDL_RenderFillRect(renderer, &cell);
   }
   
   // Render user's bike
-  block.x = static_cast<int>(user.bike_x) * block.w;
-  block.y = static_cast<int>(user.bike_y) * block.h;
+  cell.x = static_cast<int>(user.bike_x) * cell.w;
+  cell.y = static_cast<int>(user.bike_y) * cell.h;
   SDL_SetRenderDrawColor(renderer, 0x00, 0xEA, 0xFF, 0xFF);
-  SDL_RenderFillRect(renderer, &block);
+  SDL_RenderFillRect(renderer, &cell);
 
   // Render program's bike
-  block.x = static_cast<int>(program.bike_x) * block.w;
-  block.y = static_cast<int>(program.bike_y) * block.h;
+  cell.x = static_cast<int>(program.bike_x) * cell.w;
+  cell.y = static_cast<int>(program.bike_y) * cell.h;
   SDL_SetRenderDrawColor(renderer, 0xF7, 0x9D, 0x1E, 0xFF);
-  SDL_RenderFillRect(renderer, &block);
+  SDL_RenderFillRect(renderer, &cell);
 
   // Update Screen
   SDL_RenderPresent(renderer);

@@ -1,10 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <SDL2/SDL.h>
 #include "graphics.h"
 #include "input.h"
 #include "player.h"
-#include "SDL.h"
 
 class Game {
 	public:

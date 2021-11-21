@@ -1,6 +1,6 @@
+#include <SDL2/SDL.h>
 #include "game.h"
 #include "player.h"
-#include "SDL.h"
 
 // Start handling input
 void Input::Start(bool &running, bool &start) const
