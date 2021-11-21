@@ -63,36 +63,37 @@ void Player::UpdateBike()
       break;
   }
 
-  // Wrap the Player around to the beginning if going off of the screen
-  bike_x = fmod(bike_x + grid_width, grid_width);
-  bike_y = fmod(bike_y + grid_height, grid_height);
+	// Wrap the player around to the beginning if going off of the screen
+	bike_x = fmod(bike_x + grid_width, grid_width);
+	bike_y = fmod(bike_y + grid_height, grid_height);
 }
 
 // UpdateTrail adds/erases trail depending on active_trail and checks if
 // there has been a collision into a trail
 void Player::UpdateTrail(SDL_Point &c_cell, SDL_Point &p_cell)
 {
-  if (active_trail == true) {
-    // Add length to trail by adding previous head location to vector.
-    trail.push_back(p_cell);
+	if (active_trail == true) {
+		// Add length to trail by adding previous bike location to trail
+		trail.push_back(p_cell);
+		size++; // Increase size of player
 	} else {
-    // When the trail is switched off, let it fade slowly.
-    if (!trail.empty()) {
-      trail.erase(trail.begin());
+		// When the trail is switched off, let it fade slowly.
+		if (!trail.empty()) {
+			trail.erase(trail.begin());
 		}
-  }
+	}
 
   //Check for collision with enemies trail
-  for (auto const &t : enemy.trail) {
-    if (c_cell.x == t.x && c_cell.y == t.y) {
-      alive = false;
-    }
-  }
+	for (auto const &t : enemy.trail) {
+		if (c_cell.x == t.x && c_cell.y == t.y) {
+			alive = false;
+		}
+	}
 
-  // Check for collision with own trail
-  for (auto const &t : trail) {
-    if (c_cell.x == t.x && c_cell.y == t.y) {
-      alive = false;
-    }
-  }
+	// Check for collision with own trail
+	for (auto const &t : trail) {
+		if (c_cell.x == t.x && c_cell.y == t.y) {
+			alive = false;
+		}
+	}
 }
