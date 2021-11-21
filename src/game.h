@@ -1,26 +1,23 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <random>
-#include "SDL.h"
-#include "controller.h"
-#include "renderer.h"
+#include "graphics.h"
+#include "input.h"
 #include "player.h"
-#include "portal.h"
+#include "SDL.h"
 
 class Game {
- public:
-  Game(std::size_t grid_width, std::size_t grid_height);
-  void Run(Controller const &controller, Renderer &renderer,
-           std::size_t target_frame_duration);
+	public:
+		enum Type { Draw, Blue, Orange };
 
-  enum Type { kDraw, kBlue, kOrange };
+		Game(int g_width, int g_height);
+		void Run(Input const &input, Graphics &graphics, int target_frame_duration);
 
  private:
   Player user;
   Player program;
-  Portal portal;
-  void Update();
+
+  void Tick();
 };
 
 #endif

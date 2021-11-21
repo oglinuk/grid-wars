@@ -1,25 +1,25 @@
 #include <iostream>
-#include "controller.h"
 #include "game.h"
-#include "renderer.h"
+#include "graphics.h"
+#include "input.h"
 
-int main() {
-  
-  constexpr std::size_t kFramesPerSecond{60};
+int main(int argc, char *argv[])
+{
+  constexpr std::size_t kFramesPerSecond{120};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
-  constexpr std::size_t kScreenWidth{1280};
-  constexpr std::size_t kScreenHeight{720};
+  int s_width{1274};
+  int s_height{720};
   // Change grid size for a different "feel"
-  constexpr std::size_t kGridWidth{96};
-  constexpr std::size_t kGridHeight{54};
+  int g_width{97};
+  int g_height{54};
 
-  // Initialize renderer object that creates a window
-  Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
-  Controller controller;
-  Game game(kGridWidth, kGridHeight);
+  // Initialize graphics object that creates a window
+  Graphics graphics(s_width, s_height, g_width, g_height);
+  Input input;
+  Game game(g_width, g_height);
   
   // The main game loop
-  game.Run(controller, renderer, kMsPerFrame);
+  game.Run(input, graphics, kMsPerFrame);
 
   std::cout << "Game has terminated successfully!\n";
   

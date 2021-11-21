@@ -1,15 +1,13 @@
 #include "game.h"
-#include <iostream>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
-    : user(grid_width, grid_height, program, Game::kBlue, portal), 
-      program(grid_width, grid_height, user, Game::kOrange, portal),
-      portal(grid_width, grid_height)
-      {}
+Game::Game(int g_width, int g_height):
+	user(g_width, g_height, program, Game::Blue),
+	program(g_width, g_height, user, Game::Orange){}
 
-void Game::Run(Controller const &controller, Renderer &renderer,
-               std::size_t target_frame_duration) {
+// Run the game
+void Game::Run(Input const &input, Graphics &graphics, int target_frame_duration)
+{
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
@@ -23,22 +21,23 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // Input, Update, Render - the main game loop.
     if (start) {
-      controller.HandleInput(running, user, program);
-      Update();
-    }
-    else {
+      input.Handle(running, user, program);
+      Tick();
+    } else {
       // Wait for a button press before starting the game.
-      controller.ManageStart(start, running);
+      input.Start(running, start);
     }
+
     // Fill screen with the winner's color or continue rendering the game.
-    if (!user.alive && !program.alive) 
-      renderer.Fill(kDraw);
-    else if (user.alive && !program.alive)
-      renderer.Fill(kBlue);
-    else if (!user.alive && program.alive)
-      renderer.Fill(kOrange);
-    else
-      renderer.Render(user, program, portal);
+    if (!user.alive && !program.alive) {
+      graphics.Fill(Draw);
+		} else if (user.alive && !program.alive) {
+      graphics.Fill(Blue);
+		} else if (!user.alive && program.alive) {
+      graphics.Fill(Orange);
+		} else {
+			graphics.Render(user, program);
+		}
 
     frame_end = SDL_GetTicks();
 
@@ -49,7 +48,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(frame_count);
+      graphics.UpdateWindowTitle(frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -63,12 +62,14 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   }
 }
 
-void Game::Update() {
+// Tick updates user and program if theyre both alive
+void Game::Tick()
+{
   // Do not update position if someone is not alive.
-  if (!user.alive || !program.alive) 
+  if (!user.alive || !program.alive) {
     return;
+	}
 
   user.Update();
   program.Update();
-
 }
