@@ -20,12 +20,13 @@ void Game::Run(int target_frame_duration)
   int frame_count = 0;
   bool running = true; // Will be set to false if we close the window
   bool start = false;
+	Audio audio;
 
 	// Countdown before game starts
 	std::string intros_path = "../audio/clips/";
 	intros_path.append(intros[rand() % intros.size()]);
 	
-	Audio::Play(intros_path, 0);
+	audio.Play(intros_path, 0);
 	graphics.Render(user, program);
 	for (int i = 6; i > 0 ; i--) {
 		std::cout << "Games begin in " << i << " ...\n" << std::flush;
@@ -39,7 +40,7 @@ void Game::Run(int target_frame_duration)
 
 	// TODO: Create Audio::Queue and use
 	// https://wiki.libsdl.org/SDL_QueueAudio
-	Audio::Play(music_path, -1);
+	audio.Play(music_path, -1);
   input.Start(running, start);
 
   // Main game loop

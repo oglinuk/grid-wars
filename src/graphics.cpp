@@ -1,5 +1,4 @@
 #include <iostream>
-#include <SDL2/SDL_ttf.h>
 #include "game.h"
 #include "graphics.h"
 
@@ -16,7 +15,7 @@ Graphics::Graphics(int s_width, int s_height, int g_width, int g_height):
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
 
-  // Create Window
+  // Create window
 	//https://wiki.libsdl.org/SDL_CreateWindow?highlight=%28bCategoryAPIb%29%7C%28SDLFunctionTemplate%29
   window = SDL_CreateWindow("Player Game", SDL_WINDOWPOS_CENTERED,
                                 SDL_WINDOWPOS_CENTERED, screen_width,
@@ -34,11 +33,20 @@ Graphics::Graphics(int s_width, int s_height, int g_width, int g_height):
     std::cerr << "Renderer could not be created.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
+
+	// Set font_path
+	font_path = "../fonts/xolonium.ttf";
 }
 
 Graphics::~Graphics()
 {
+	// https://wiki.libsdl.org/SDL_DestroyWindow
   SDL_DestroyWindow(window);
+	// https://wiki.libsdl.org/SDL_DestroyRenderer
+	SDL_DestroyRenderer(renderer);
+	// https://www.libsdl.org/projects/SDL_ttf/docs/SDL_ttf_18.html
+	TTF_CloseFont(font);
+	// https://wiki.libsdl.org/SDL_Quit
   SDL_Quit();
 }
 
@@ -91,7 +99,12 @@ void Graphics::RenderText(std::string msg)
 {
 	TTF_Init();
 
-	TTF_Font *font = TTF_OpenFont("../fonts/xolonium.ttf", 50);
+	font = TTF_OpenFont(font_path.c_str(), 50);
+	if (font == NULL) {
+		printf("Failed to open font %s ...\n", font_path.c_str());
+		exit(1);
+	}
+
 	SDL_Color color = { 255, 255, 255 };
 	SDL_Surface *surface = TTF_RenderText_Solid(font, msg.c_str(), color);
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -107,7 +120,7 @@ void Graphics::RenderText(std::string msg)
 
 // Print name and FPS counter to window title
 void Graphics::UpdateWindowTitle(int fps) {
-  std::string title{"TRON: " + std::to_string(fps) + " FPS"};
+  std::string title{"Grid Wars: " + std::to_string(fps) + " FPS"};
   SDL_SetWindowTitle(window, title.c_str());
 }
 
@@ -118,20 +131,20 @@ void Graphics::Fill(int winner) {
 	switch (winner) {
 		case Game::Draw:
 			msg = "Draw!";
-    	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    	SDL_RenderClear(renderer);
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+			SDL_RenderClear(renderer);
 			break;
 
 		case Game::Blue:
 			msg = "User wins!";
-    	SDL_SetRenderDrawColor(renderer, 0x00, 0xEA, 0xFF, 0xFF);
-   		SDL_RenderClear(renderer);
+			SDL_SetRenderDrawColor(renderer, 0x00, 0xEA, 0xFF, 0xFF);
+			SDL_RenderClear(renderer);
 			break;
 
 		case Game::Orange:
 			msg = "Program wins!";
-    	SDL_SetRenderDrawColor(renderer, 0xFF, 0x67, 0x00, 0xFF);
-    	SDL_RenderClear(renderer);
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0x67, 0x00, 0xFF);
+			SDL_RenderClear(renderer);
 			break;
 	}
 

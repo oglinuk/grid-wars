@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
 #include "audio.h"
+
+Audio::Audio(){}
+Audio::~Audio(){}
 
 // Play path using loops
 void Audio::Play(std::string path, int loops)
@@ -16,7 +18,7 @@ void Audio::Play(std::string path, int loops)
 
 	// Load the music
 	// https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_55.html
-	Mix_Music *music = Mix_LoadMUS(path.c_str());
+	music = Mix_LoadMUS(path.c_str());
 	if (music == NULL) {
 		printf("Unable to load music file: %s\n", Mix_GetError());
 	}
