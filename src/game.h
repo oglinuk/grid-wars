@@ -10,14 +10,25 @@ class Game {
 	public:
 		enum Type { Draw, Blue, Orange };
 
-		Game(int g_width, int g_height);
-		void Run(Input const &input, Graphics &graphics, int target_frame_duration);
+		Game(int g_width, int g_height, Input &i, Graphics &g);
+		void Run(int target_frame_duration);
 
- private:
-  Player user;
-  Player program;
+	private:
+		Player user;
+		Player program;
+		Graphics graphics;
+		Input input;
+		std::vector<std::string> intros{"fintro.ogg", "mintro.ogg"};
+		std::vector<std::string> songs{
+			"salt-mines.ogg",
+			"frontier.ogg",
+			"disconscient.ogg",
+			"ftl.ogg"
+		};
 
-  void Tick();
+		void Tick();
+		void WinnerScreen();
+		void Reset();
 };
 
 #endif

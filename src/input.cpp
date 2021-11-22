@@ -78,14 +78,6 @@ void Input::Handle(bool &running, Player &user, Player &program) const
           // Activate and deactivate trail
           program.active_trail == false ? program.active_trail = true : program.active_trail = false;
           break;
-
-        case SDLK_RETURN:
-          // Reset the game if it has finished by pressing enter.
-          if (!user.alive || !program.alive) {
-            Reset(user,program);
-          }
-          break;
-
       }
     }
   }
@@ -98,25 +90,4 @@ void Input::ChangeDirection(Player &player, Player::Direction input, Player::Dir
   if (player.direction != opposite || player.size == 1) {
     player.direction = input;
 	}
-}
-
-
-// Reset all attributes of each player
-void Input::Reset(Player &user, Player &program) const
-{
-  user.active_trail = false;
-  user.alive = true;
-  user.bike_x = 0.0;
-  user.bike_y = static_cast<float>(user.getGridHeight() / 2);
-  user.trail.clear();
-  user.direction = Player::Direction::kRight;
-  user.speed = 0.1f;
-
-  program.active_trail = false;
-  program.alive = true;
-  program.bike_x = static_cast<float>(program.getGridWidth());
-  program.bike_y = static_cast<float>(program.getGridHeight() / 2);
-  program.trail.clear();
-  program.direction = Player::Direction::kLeft;
-  program.speed = 0.1f;
 }

@@ -1,5 +1,4 @@
 #include <iostream>
-#include "audio.h"
 #include "game.h"
 #include "graphics.h"
 #include "input.h"
@@ -15,15 +14,15 @@ int main(int argc, char *argv[])
   int g_width{97};
   int g_height{54};
 
+  srand(time(0)); // Set current time as seed for rng
+
   // Initialize graphics object that creates a window
   Graphics graphics(s_width, s_height, g_width, g_height);
   Input input;
-  Game game(g_width, g_height);
-
-	Audio::Play();
+  Game game(g_width, g_height, input, graphics);
 
   // The main game loop
-  game.Run(input, graphics, kMsPerFrame);
+  game.Run(kMsPerFrame);
 
   std::cout << "Game has terminated successfully!\n";
   

@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include <iostream>
 #include <SDL2/SDL.h>
 #include "game.h"
 #include "player.h"
@@ -11,6 +12,7 @@ class Graphics {
   ~Graphics();
 
   void Render(Player const &user, Player const &program);
+	void RenderText(std::string msg);
   void Fill(int winner);
   void UpdateWindowTitle(int fps);
 

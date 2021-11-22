@@ -1,4 +1,5 @@
 #include <iostream>
+#include <SDL2/SDL_ttf.h>
 #include "game.h"
 #include "graphics.h"
 
@@ -81,11 +82,30 @@ void Graphics::Render(Player const &user, Player const &program)
   SDL_SetRenderDrawColor(renderer, 0xF7, 0x9D, 0x1E, 0xFF);
   SDL_RenderFillRect(renderer, &cell);
 
-  // Update Screen
+  // Update screen
   SDL_RenderPresent(renderer);
 }
 
-// Print name and FPS Counter to window title
+// RenderText to window
+void Graphics::RenderText(std::string msg)
+{
+	TTF_Init();
+
+	TTF_Font *font = TTF_OpenFont("../fonts/xolonium.ttf", 50);
+	SDL_Color color = { 255, 255, 255 };
+	SDL_Surface *surface = TTF_RenderText_Solid(font, msg.c_str(), color);
+	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+	int w = 0;
+	int h = 0;
+	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+	SDL_Rect rect = { screen_width/2, screen_height/2, w, h };
+
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
+	SDL_RenderPresent(renderer);
+}
+
+// Print name and FPS counter to window title
 void Graphics::UpdateWindowTitle(int fps) {
   std::string title{"TRON: " + std::to_string(fps) + " FPS"};
   SDL_SetWindowTitle(window, title.c_str());
@@ -93,22 +113,28 @@ void Graphics::UpdateWindowTitle(int fps) {
 
 // Fill screen with the winner's color (white in case of a draw)
 void Graphics::Fill(int winner) {
+	std::string msg = "";
+
 	switch (winner) {
 		case Game::Draw:
+			msg = "Draw!";
     	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     	SDL_RenderClear(renderer);
 			break;
 
 		case Game::Blue:
+			msg = "User wins!";
     	SDL_SetRenderDrawColor(renderer, 0x00, 0xEA, 0xFF, 0xFF);
    		SDL_RenderClear(renderer);
 			break;
 
 		case Game::Orange:
+			msg = "Program wins!";
     	SDL_SetRenderDrawColor(renderer, 0xFF, 0x67, 0x00, 0xFF);
     	SDL_RenderClear(renderer);
 			break;
 	}
 
+	RenderText(msg);
   SDL_RenderPresent(renderer);
 }
