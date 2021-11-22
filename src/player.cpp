@@ -6,16 +6,15 @@ Player::Player(int g_width, int g_height, Player const &e, int color):
 	grid_height(g_height),
 	enemy(e)
 {
+	// Set both plays to a random x,y coordinate and direction
 	if (color == Game::Blue) {
-		// If it is a user, set coordinates to the left edge of the screen.
-		bike_x = static_cast<float>(0);
-		bike_y = static_cast<float>(grid_height / 2);
-		direction = Direction::kRight;
+		bike_x = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/grid_width));
+		bike_y = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/grid_height));
+		direction = static_cast<Direction>(rand() % 4);
 	} else {
-		// If it is a program, set coordinates to the right edge of the screen.
-		bike_x = static_cast<float>(grid_width);
-		bike_y = static_cast<float>(grid_height / 2);
-		direction = Direction::kLeft;
+		bike_x = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/grid_width));
+		bike_y = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/grid_height));
+		direction = static_cast<Direction>(rand() % 4);
 	}
 }
 

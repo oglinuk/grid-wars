@@ -1,8 +1,6 @@
 #include <chrono>
-#include <iostream>
 #include <SDL2/SDL.h>
 #include <thread>
-#include <vector>
 #include "audio.h"
 #include "game.h"
 
@@ -111,16 +109,16 @@ void Game::Reset()
 {
   user.active_trail = false;
   user.alive = true;
-  user.bike_x = 0.0;
-  user.bike_y = static_cast<float>(user.getGridHeight() / 2);
+  user.bike_x = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/graphics.getGridWidth()));
+  user.bike_y = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/graphics.getGridHeight()));
   user.trail.clear();
   user.direction = Player::Direction::kRight;
   user.speed = 0.1f;
 
   program.active_trail = false;
   program.alive = true;
-  program.bike_x = static_cast<float>(program.getGridWidth());
-  program.bike_y = static_cast<float>(program.getGridHeight() / 2);
+  program.bike_x = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/graphics.getGridWidth()));
+  program.bike_y = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/graphics.getGridHeight()));
   program.trail.clear();
   program.direction = Player::Direction::kLeft;
   program.speed = 0.1f;

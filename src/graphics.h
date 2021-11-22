@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
-#include "game.h"
 #include "player.h"
 
 class Graphics {
@@ -15,6 +14,8 @@ class Graphics {
 	void RenderText(std::string msg);
   void Fill(int winner);
   void UpdateWindowTitle(int fps);
+	int getGridWidth() { return grid_width; };
+	int getGridHeight() { return grid_height; };
 
  private:
   SDL_Window *window;

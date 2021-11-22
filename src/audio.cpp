@@ -2,6 +2,7 @@
 #include <SDL2/SDL_mixer.h>
 #include "audio.h"
 
+// Play path using loops
 void Audio::Play(std::string path, int loops)
 {
 	SDL_Init(SDL_INIT_AUDIO);

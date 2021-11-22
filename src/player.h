@@ -20,8 +20,6 @@ class Player {
 
   Player(int g_width, int g_height, Player const &e, int color);
   void Update();
-  int getGridWidth() {return grid_width;};
-  int getGridHeight() {return grid_height;};
 
  private:
   int grid_width;
