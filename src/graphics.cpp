@@ -2,6 +2,7 @@
 #include "game.h"
 #include "graphics.h"
 
+// Graphics constructor
 Graphics::Graphics(int s_width, int s_height, int g_width, int g_height):
 	screen_width(s_width),
 	screen_height(s_height),
@@ -9,44 +10,33 @@ Graphics::Graphics(int s_width, int s_height, int g_width, int g_height):
 	grid_height(g_height)
 {
   // Initialize SDL
-	// https://wiki.libsdl.org/SDL_Init
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    std::cerr << "SDL could not initialize.\n";
-    std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
+		printf("SDL_Init failed: %s ...\n", SDL_GetError());
   }
 
   // Create window
-	//https://wiki.libsdl.org/SDL_CreateWindow?highlight=%28bCategoryAPIb%29%7C%28SDLFunctionTemplate%29
-  window = SDL_CreateWindow("Player Game", SDL_WINDOWPOS_CENTERED,
+  this->window = SDL_CreateWindow("Player Game", SDL_WINDOWPOS_CENTERED,
                                 SDL_WINDOWPOS_CENTERED, screen_width,
                                 screen_height, SDL_WINDOW_SHOWN);
-  // Check if it was able to open up
-  if (nullptr == window) {
-    std::cerr << "Window could not be created.\n";
-    std::cerr << " SDL_Error: " << SDL_GetError() << "\n";
+  if (this->window == NULL) {
+		printf("Window is NULL: %s ...\n", SDL_GetError());
   }
 
   // Create renderer
-	// https://wiki.libsdl.org/SDL_CreateRenderer
-  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-  if (nullptr == renderer) {
-    std::cerr << "Renderer could not be created.\n";
-    std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
+  this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  if (this->renderer == NULL) {
+		printf("Renderer is NULL: %s ...\n", SDL_GetError());
   }
 
-	// Set font_path
-	font_path = "../fonts/xolonium.ttf";
+	this->font_path = "./fonts/xolonium.ttf";
 }
 
+// Graphics deconstructor
 Graphics::~Graphics()
 {
-	// https://wiki.libsdl.org/SDL_DestroyWindow
   SDL_DestroyWindow(window);
-	// https://wiki.libsdl.org/SDL_DestroyRenderer
 	SDL_DestroyRenderer(renderer);
-	// https://www.libsdl.org/projects/SDL_ttf/docs/SDL_ttf_18.html
 	TTF_CloseFont(font);
-	// https://wiki.libsdl.org/SDL_Quit
   SDL_Quit();
 }
 
@@ -57,9 +47,8 @@ void Graphics::Render(Player const &user, Player const &program)
   cell.w = screen_width / grid_width;
   cell.h = screen_height / grid_height;
 
-  // Clear screen
   SDL_SetRenderDrawColor(renderer, 0x1E, 0x1E, 0x1E, 0xFF);
-  SDL_RenderClear(renderer);
+	Clear();
 
   // Render user's trail
   SDL_SetRenderDrawColor(renderer, 0x26, 0xB4, 0xCA, 0xFF);
@@ -90,8 +79,7 @@ void Graphics::Render(Player const &user, Player const &program)
   SDL_SetRenderDrawColor(renderer, 0xF7, 0x9D, 0x1E, 0xFF);
   SDL_RenderFillRect(renderer, &cell);
 
-  // Update screen
-  SDL_RenderPresent(renderer);
+	Display();
 }
 
 // RenderText to window
@@ -115,7 +103,6 @@ void Graphics::RenderText(std::string msg)
 	SDL_Rect rect = { screen_width/2, screen_height/2, w, h };
 
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
-	SDL_RenderPresent(renderer);
 }
 
 // Print name and FPS counter to window title
@@ -132,22 +119,28 @@ void Graphics::Fill(int winner) {
 		case Game::Draw:
 			msg = "Draw!";
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-			SDL_RenderClear(renderer);
 			break;
-
 		case Game::Blue:
 			msg = "User wins!";
 			SDL_SetRenderDrawColor(renderer, 0x00, 0xEA, 0xFF, 0xFF);
-			SDL_RenderClear(renderer);
 			break;
-
 		case Game::Orange:
 			msg = "Program wins!";
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x67, 0x00, 0xFF);
-			SDL_RenderClear(renderer);
 			break;
 	}
 
+	Clear();
 	RenderText(msg);
-  SDL_RenderPresent(renderer);
+	Display();
+}
+
+void Graphics::Clear()
+{
+	SDL_RenderClear(this->renderer);
+}
+
+void Graphics::Display()
+{
+  SDL_RenderPresent(this->renderer);
 }

@@ -18,6 +18,8 @@ If you can overcome this challenge, the grid will light up in your color.
 
 ## Controls
 
+`esc` to quit
+
 ### User
 
 * Movement: `WASD`
@@ -48,6 +50,11 @@ If you can overcome this challenge, the grid will light up in your color.
 2. `cmake .. && make`
 3. `./grid-wars`
 
+or
+
+1. `./init build`
+2. `./grid-wars`
+
 ## Program Structure
 
 * Input: A class that handles all input events
@@ -61,10 +68,11 @@ If you can overcome this challenge, the grid will light up in your color.
 * [X] Add music
 	* [X] Add multiple songs and play at random
 * [X] Add a countdown at the start
+	* [ ] Display countdown on screen
 * [X] Change spawns of both players to be random
-* [ ] Fix rendering issue with `Game::WinnerScreen` (bugs out sometimes)
 * [ ] Change grid size to scale with resolution of window
 * [ ] Add ai option && simple ai
+* [ ] Add multiplayer
 
 ## Attribution
 

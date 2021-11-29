@@ -2,21 +2,6 @@
 #include "input.h"
 #include "player.h"
 
-// Start handling input
-void Input::Start(bool &running, bool &start) const
-{
-  // Wait for a key to be pressed and then start the game.
-  SDL_Event e;
-  while (SDL_PollEvent(&e)) {
-    if (e.type == SDL_QUIT) {
-      running = false;
-    } 
-    else if (e.type == SDL_KEYDOWN) {
-      start = true;
-    }
-  }
-}
-
 // Handle inputs
 void Input::Handle(bool &running, Player &user, Player &program) const
 {
@@ -78,6 +63,10 @@ void Input::Handle(bool &running, Player &user, Player &program) const
           // Activate and deactivate trail
           program.active_trail == false ? program.active_trail = true : program.active_trail = false;
           break;
+
+				case SDLK_ESCAPE:
+					puts("Game is exiting ...");
+					exit(0);
       }
     }
   }
