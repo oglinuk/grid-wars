@@ -1,0 +1,16 @@
+#!/bin/bash
+
+build() {
+	if [ -d "build" ]; then
+		clean
+	fi
+
+	mkdir build && cd build
+	cmake .. && make
+}
+
+clean() {
+	rm -rf build
+}
+
+$*

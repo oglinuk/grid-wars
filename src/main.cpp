@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
   Game game(g_width, g_height, input, graphics);
 
   game.Run(kMsPerFrame);
-
-  std::cout << "Game has terminated successfully!\n";
   
   return 0;
 }

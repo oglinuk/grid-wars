@@ -8,7 +8,16 @@ Game::Game(int g_width, int g_height, Input &i, Graphics &g):
 	user(g_width, g_height, program, Game::Blue),
 	program(g_width, g_height, user, Game::Orange),
 	input(i),
-	graphics(g){}
+	graphics(g)
+{
+	this->intros = {"fintro.ogg", "mintro.ogg"};
+	this->songs = {
+		"salt-mines.ogg",
+		"frontier.ogg",
+		"disconscient.ogg",
+		"ftl.ogg"
+	};
+}
 
 // Run the game
 void Game::Run(int target_frame_duration)
@@ -22,26 +31,25 @@ void Game::Run(int target_frame_duration)
   bool start = false;
 	Audio audio;
 
-	// Countdown before game starts
-	std::string intros_path = "../audio/clips/";
+	// Set random intro
+	std::string intros_path = "./audio/clips/";
 	intros_path.append(intros[rand() % intros.size()]);
 	
+	// Countdown before game starts
 	audio.Play(intros_path, 0);
 	graphics.Render(user, program);
 	for (int i = 6; i > 0 ; i--) {
-		std::cout << "Games begin in " << i << " ...\n" << std::flush;
+		printf("Game begins in %d ...\n", i);
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
 	// Start random background music
-	std::string music_path = "../audio/music/";
+	std::string music_path = "./audio/music/";
 	music_path.append(songs[rand() % songs.size()]);
 	printf("Now playing %s ...\n", music_path.c_str());
 
 	// TODO: Create Audio::Queue and use
-	// https://wiki.libsdl.org/SDL_QueueAudio
 	audio.Play(music_path, -1);
-  input.Start(running, start);
 
   // Main game loop
   while (running) {
@@ -50,12 +58,13 @@ void Game::Run(int target_frame_duration)
     input.Handle(running, user, program);
 
     Tick();
+
+		graphics.Render(user, program);
+
     if (!user.alive || !program.alive) {
 			WinnerScreen();
 			std::this_thread::sleep_for(std::chrono::seconds(4));
 		}
-
-		graphics.Render(user, program);
 
     frame_end = SDL_GetTicks();
 
@@ -105,22 +114,9 @@ void Game::WinnerScreen()
 	Reset();
 }
 
-// Reset all attributes of each player
+// Reset players
 void Game::Reset()
 {
-  user.active_trail = false;
-  user.alive = true;
-  user.bike_x = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/graphics.getGridWidth()));
-  user.bike_y = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/graphics.getGridHeight()));
-  user.trail.clear();
-  user.direction = Player::Direction::kRight;
-  user.speed = 0.1f;
-
-  program.active_trail = false;
-  program.alive = true;
-  program.bike_x = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/graphics.getGridWidth()));
-  program.bike_y = static_cast<float>(rand())/(static_cast<float>(RAND_MAX/graphics.getGridHeight()));
-  program.trail.clear();
-  program.direction = Player::Direction::kLeft;
-  program.speed = 0.1f;
+	user.Reset();
+	program.Reset();
 }

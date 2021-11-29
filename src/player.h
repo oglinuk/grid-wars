@@ -6,7 +6,7 @@
 
 class Player {
  public:
-  enum class Direction { kUp, kDown, kLeft, kRight };
+  enum class Direction { kUp, kDown, kLeft, kRight, last };
 
   Player const &enemy;
   Direction direction;
@@ -20,6 +20,7 @@ class Player {
 
   Player(int g_width, int g_height, Player const &e, int color);
   void Update();
+	void Reset();
 
  private:
   int grid_width;
@@ -27,6 +28,7 @@ class Player {
 
   void UpdateBike();
   void UpdateTrail(SDL_Point &current_cell, SDL_Point &prev_cell);
+	Direction randomDirection();
 };
 
 #endif

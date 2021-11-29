@@ -1,4 +1,3 @@
-#include <SDL2/SDL.h>
 #include "audio.h"
 
 Audio::Audio(){}
@@ -7,25 +6,25 @@ Audio::~Audio(){}
 // Play path using loops
 void Audio::Play(std::string path, int loops)
 {
-	SDL_Init(SDL_INIT_AUDIO);
+	if (SDL_Init(SDL_INIT_AUDIO) != 0) {
+		printf("SDL_Init failed: %s\n", Mix_GetError());
+	}
 
 	// Initialize SDL mixer
 	// TODO: Replace with https://wiki.libsdl.org/SDL_OpenAudioDevice
 	// 							frequency, format, channels, chunksize
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != 0) {
-		printf("Unable to open audio device: %s\n", Mix_GetError());
+		printf("Mix_OpenAudio failed: %s\n", Mix_GetError());
 	}
 
 	// Load the music
-	// https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_55.html
-	music = Mix_LoadMUS(path.c_str());
-	if (music == NULL) {
-		printf("Unable to load music file: %s\n", Mix_GetError());
+	this->music = Mix_LoadMUS(path.c_str());
+	if (this->music == NULL) {
+		printf("Music is NULL: %s\n", Mix_GetError());
 	}
 
 	// Play the music
-	// https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_57.html
 	if (Mix_PlayMusic(music, loops) == -1) {
-		printf("Unable to play music file: %s\n", Mix_GetError());
+		printf("Mix_PlayMusic failed: %s\n", Mix_GetError());
 	}
 }

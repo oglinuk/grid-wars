@@ -13,8 +13,10 @@ class Graphics {
 
 		void Render(Player const &user, Player const &program);
 		void RenderText(std::string msg);
-		void Fill(int winner);
 		void UpdateWindowTitle(int fps);
+		void Fill(int winner);
+		void Clear();
+		void Display();
 		int getGridWidth() { return grid_width; };
 		int getGridHeight() { return grid_height; };
 
